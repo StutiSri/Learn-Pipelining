@@ -7,6 +7,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloWorld {
     @RequestMapping("/")
     public String home() {
-        return "Hello World!";
+        return "Hello!";
+    }
+
+    @RequestMapping("/new-world")
+    public String newWorld(){
+        return "Welcome To New World!";
+    }
+
+    @RequestMapping("/hot-swap")
+    public String hotSwap(){
+        return "Came from HotSwap!";
     }
 }
