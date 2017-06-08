@@ -4,3 +4,7 @@ gradle
 .idea
 workspace.xml
 *.DS_Store
+gradlew
+gradlew.bat
+settings.gradle
+.gradle
