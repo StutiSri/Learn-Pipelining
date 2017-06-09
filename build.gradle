@@ -3,16 +3,19 @@ buildscript {
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE"
         classpath 'org.springframework:springloaded:1.2.6.RELEASE'
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
 plugins {
     id 'org.springframework.boot' version '1.5.3.RELEASE'
 }
+group = 'springio'
 
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'idea'
+apply plugin: 'docker'
 
 idea {
     module {
@@ -36,23 +39,29 @@ dependencies {
     compile("org.thymeleaf:thymeleaf-spring4")
     compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+
 }
 
-version = '1.0'
+version = '0.1.0'
+
+jar {
+    baseName = 'jvm-learnpipeling'
+    version =  version
+}
 
 war{
-    baseName = 'learnPipelining'
+    baseName = 'jvm-learnpipelining'
     version = version
 }
 
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'LearnPipelining',
+        attributes 'Implementation-Title': 'learnpipeling',
                 'Implementation-Version': version,
                 'Main-Class': 'tw.org.learnPipeling.Application'
     }
-    baseName = project.name + '-all'
+    baseName = 'jvm-learnpipelining'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
@@ -60,4 +69,16 @@ task fatJar(type: Jar) {
 bootRun {
     // Use Spring Boot DevTool only when we run Gradle bootRun task
     classpath = sourceSets.main.runtimeClasspath + configurations.dev
+}
+
+task buildDocker(type: Docker, dependsOn: build) {      // this task will build our Docker image
+    push = true
+    applicationName = jar.baseName
+    dockerfile = file('docker/Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
 }
