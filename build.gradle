@@ -43,7 +43,7 @@ dependencies {
 
 }
 
-version = System.getenv('TRAVIS_JOB_NUMBER') ? '1' : '0'
+version = System.getenv('TRAVIS_JOB_NUMBER') ? System.getenv('TRAVIS_JOB_NUMBER') : '0'
 
 jar {
     baseName = 'jvm-learnpipelining'
@@ -79,6 +79,7 @@ task cool {
         println 'trying version'
         println version
         println System.getenv('TRAVIS_JOB_NUMBER')
+        logger.info(version)
     }
 }
 
