@@ -87,6 +87,7 @@ task buildDocker(type: Docker, dependsOn: build) {      // this task will build 
     push = true
     applicationName = jar.baseName
     dockerfile = file('Dockerfile')
+    tagVersion=version
     doFirst {
         copy {
             from war.archivePath
