@@ -43,14 +43,13 @@ dependencies {
 
 }
 
-version = System.getenv('TRAVIS_JOB_NUMBER') ? System.getenv('TRAVIS_JOB_NUMBER') : '0'
+def dockerImageVersion = System.getenv('TRAVIS_JOB_NUMBER') ? System.getenv('TRAVIS_JOB_NUMBER') : '0'
 
 jar {
     baseName = 'jvm-learnpipelining'
-    version =  version
 }
 
-war{
+war {
     baseName = 'jvm-learnpipelining'
 }
 
@@ -60,7 +59,6 @@ group = 'stutisrivastv'
 task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'learnpipelining',
-                'Implementation-Version': version,
                 'Main-Class': 'tw.org.learnPipeling.Application'
     }
     baseName = 'jvm-learnpipelining'
@@ -76,7 +74,6 @@ bootRun {
 task cool {
     doFirst {
         println 'trying version'
-        println version
         println war.archivePath
     }
 }
@@ -85,7 +82,7 @@ task buildDocker(type: Docker, dependsOn: build) {      // this task will build 
     push = true
     applicationName = jar.baseName
     dockerfile = file('Dockerfile')
-    tagVersion=version
+    tagVersion = dockerImageVersion
     doFirst {
         copy {
             from war.archivePath
