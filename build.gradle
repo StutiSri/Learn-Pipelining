@@ -10,12 +10,13 @@ buildscript {
 plugins {
     id 'org.springframework.boot' version '1.5.3.RELEASE'
 }
-group = 'springio'
+//group = 'springio'
 
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'docker'
+apply plugin: 'application'
 
 idea {
     module {
@@ -45,7 +46,7 @@ dependencies {
 version = '0.1.0'
 
 jar {
-    baseName = 'jvm-learnpipeling'
+    baseName = 'jvm-learnpipelining'
     version =  version
 }
 
@@ -54,10 +55,12 @@ war{
     version = version
 }
 
+group = 'stutisrivastv'
+
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'learnpipeling',
+        attributes 'Implementation-Title': 'learnpipelining',
                 'Implementation-Version': version,
                 'Main-Class': 'tw.org.learnPipeling.Application'
     }
@@ -71,14 +74,29 @@ bootRun {
     classpath = sourceSets.main.runtimeClasspath + configurations.dev
 }
 
+task cool {
+    doFirst {
+        println war.archiveName
+        println war.archivePath
+    }
+}
+
 task buildDocker(type: Docker, dependsOn: build) {      // this task will build our Docker image
     push = true
     applicationName = jar.baseName
-    dockerfile = file('docker/Dockerfile')
+    dockerfile = file('Dockerfile')
     doFirst {
         copy {
-            from jar
+            from war.archivePath
             into stageDir
         }
     }
 }
+
+distDocker {
+    exposePort 8080
+}
+
+/*docker {
+    useApi true
+}*/
