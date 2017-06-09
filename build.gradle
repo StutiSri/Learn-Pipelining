@@ -77,8 +77,7 @@ task cool {
     doFirst {
         println 'trying version'
         println version
-        println System.getenv('TRAVIS_JOB_NUMBER')
-        logger.info(version)
+        println war.archivePath
     }
 }
 
