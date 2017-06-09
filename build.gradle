@@ -52,7 +52,6 @@ jar {
 
 war{
     baseName = 'jvm-learnpipelining'
-    version = version
 }
 
 group = 'stutisrivastv'
