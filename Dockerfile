@@ -9,11 +9,11 @@ ENV APP_HOME /home/$USER_NAME/app
 RUN useradd -ms /bin/bash $USER_NAME
 RUN mkdir $APP_HOME
  
-ADD /build/libs/jvm-learnpipelining-0.war $APP_HOME/jvm-learnpipelining.war
+ADD jvm-learnpipelining-0.war $APP_HOME/jvm-learnpipelining.war
 RUN chown $USER_NAME $APP_HOME/jvm-learnpipelining.war
  
 USER $USER_NAME
 WORKDIR $APP_HOME
-RUN bash -c 'touch jvm-learnpipelining.war'
+#RUN bash -c 'touch jvm-learnpipelining.war'
  
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","jvm-learnpipelining.war"]
