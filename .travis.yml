@@ -8,5 +8,5 @@ after_success:
 - #docker run -d -p 127.0.0.1:80:4567 stutisrivastv/jvm-learnpipelining:TRAVIS_JOB_NUMBER
 - if [ "$TRAVIS_BRANCH" == "master" ]; then
   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-  docker push stutisrivastv/jvm-learnpipelining:latest;
+  gradlew buildDocker;
   fi
