@@ -43,7 +43,7 @@ dependencies {
 
 }
 
-version = '0.1.0'
+version = System.getenv(TRAVIS_JOB_NUMBER)
 
 jar {
     baseName = 'jvm-learnpipelining'
@@ -76,8 +76,7 @@ bootRun {
 
 task cool {
     doFirst {
-        println war.archiveName
-        println war.archivePath
+        println version
     }
 }
 
